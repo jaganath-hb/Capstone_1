@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: capstone
+spec:
+  replicas: 2
+  selector:
+    matchLabels: app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      serviceAccountName: web-sa   # for workload identity
+      containers:
+        - name: web
+          image: <ACR_NAME>.azurecr.io/capstone-web:latest
+          ports:
+            - containerPort: 8501
+          env:
+            - name: SQL_CONN_STR
+              valueFrom:
+                secretKeyRef:
+                  name: kv-secrets
+                  key: SQL_CONN_STR
+            - name: OPENAI_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: kv-secrets
+                  key: OPENAI_ENDPOINT
+            - name: OPENAI_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kv-secrets
+                  key: OPENAI_KEY
+            - name: BLOB_CONTAINER
+              value: uploads
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8501
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests: { cpu: "250m", memory: "512Mi" }
+            limits:   { cpu: "500m", memory: "1Gi" }

@@ -1,16 +1,18 @@
-from sentence_transformers import SentenceTransformer
+from openai import OpenAI
 import numpy as np
+import os
+from dotenv import load_dotenv
 
-_model = None
+# Load environment variables from .env
+load_dotenv()
 
-def get_model(name: str = "all-MiniLM-L6-v2"):
-    global _model
-    if _model is None:
-        _model = SentenceTransformer(name)
-    return _model
-
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def embed_texts(texts):
-    model = get_model()
-    emb = model.encode(texts, show_progress_bar=False, convert_to_numpy=True)
-    return emb
+    response = client.embeddings.create(
+        model="text-embedding-3-small",
+        input=texts
+    )
+    
+    embeddings = [item.embedding for item in response.data]
+    return np.array(embeddings)

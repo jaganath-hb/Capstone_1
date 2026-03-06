@@ -1,6 +1,7 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 WORKDIR /app
 COPY . /app
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 EXPOSE 8501
-CMD ["streamlit", "run", "app/dashboard/streamlit_app.py", "--server.port=8501", "--server.enableCORS=false"]
+CMD ["streamlit", "run", "app/main.py", "--server.port=8501", "--server.address=0.0.0.0"]
+``
