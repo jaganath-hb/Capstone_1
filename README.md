@@ -1,6 +1,6 @@
 # Product Review — Sentiment & Action Dashboard
 
-Quick scaffold for a 6-hour PoC that ingests product reviews, clusters themes, computes sentiment, and auto-suggests improvements.
+ PoC that ingests product reviews, clusters themes, computes sentiment, and auto-suggests improvements.
 
 Structure:
 - `app/dashboard/` — Streamlit app entrypoint
