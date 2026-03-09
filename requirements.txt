@@ -6,3 +6,5 @@ faiss-cpu
 openai
 azure-applicationinsights
 python-dotenv
+langchain_openai
+langgraph
